@@ -1,0 +1,40 @@
+
+import requests
+from fastapi import FastAPI
+from desafio_codigo_principal import App
+import mysql.connector
+ngrok_url = "45.4.105.191" 
+
+app = FastAPI()
+my_app = App()
+
+##Banco de dados
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="teste",
+  database=" Desafio_Profissional"
+)
+mycursor = mydb.cursor()
+
+##Aqui é a API
+@app.get("/users/{name}")#aqui verifica se o nome esta na lista(n ta funcionando..)
+def get_user(name: str):
+    user = my_app.get_user_by_name(name)
+    if not user:
+        return {"error": "User not found"}
+    return {"name": user.name, "level": user.level, "points": user.points}
+
+# aqui esta criando o usuario
+@app.post("/users")   
+# level: int, points: int ver como criar esse caras
+def create_user(name: str): 
+    user = my_app.create_user(name)
+    #user = my_app.create_user(level)
+    #user = my_app.create_user(points)
+    mycursor = mydb.cursor()
+    sql = "INSERT INTO users (name, level, points) VALUES (%s, %s, %s)"
+    val = (user.name, user.level, user.points)
+    mycursor.execute(sql, val)
+    mydb.commit()
+    return {"name": user.name, "level": user.level, "points": user.points}
