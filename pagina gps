@@ -1,0 +1,36 @@
+import React, { useEffect, useState } from 'react';
+import { View, Text } from 'react-native';
+import * as Location from 'expo-location';
+
+const GPSPage = () => {
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permissão de localização não concedida');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
+
+  return (
+    <View>
+      <Text>Coordenadas GPS:</Text>
+      {errorMsg ? <Text>{errorMsg}</Text> : null}
+      {location ? (
+        <>
+          <Text>Latitude: {location.coords.latitude}</Text>
+          <Text>Longitude: {location.coords.longitude}</Text>
+        </>
+      ) : (
+        <Text>Obtendo coordenadas GPS...</Text>
+      )}
+    </View>
+  );
+};
