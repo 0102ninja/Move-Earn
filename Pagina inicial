@@ -1,0 +1,234 @@
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput } from 'react-native';
+import GPSPage from './GPSPage'; // Importe o componente GPSPage
+import RankingPage from './RankingPage';
+
+export default function App() {
+  const [isBlueScreen, setIsBlueScreen] = useState(true);
+  const [showGPSPage, setShowGPSPage] = useState(false);
+  const [showRankingPage, setShowRankingPage] = useState(false)
+}
+export default function App() {
+  const [isBlueScreen, setIsBlueScreen] = useState(true);
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [dataNascimento, setDataNascimento] = useState('');
+  const [estado, setEstado] = useState('');
+  const [cidade, setCidade] = useState('');
+
+  function toggleScreen() {
+    setIsBlueScreen(!isBlueScreen);
+  }
+  function goBack() {
+    setIsBlueScreen(true);
+  }
+  function formatarCPF(cpf: string) {
+    cpf = cpf.replace(/\D/g, "");//Remove caracteres não numéricos
+    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");//Insere ponto após o terceiro dígito
+    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");//Insere ponto após o terceiro dígito (novamente)
+    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");//Insere hífen antes dos últimos 2 dígitos
+    return cpf;
+  }
+  function validarDataNascimento(dataNascimento: string) {
+    const regexData = /^\d{ v    2}\/\d{2}\/\d{4}$/;
+    if (!regexData.test(dataNascimento)) {
+      return false; // Formato inválido
+    }
+    const partes = dataNascimento.split("/");
+    const dia = parseInt(partes[0]);
+    const mes = parseInt(partes[1]);
+    const ano = parseInt(partes[2]);
+    const data = new Date(ano, mes - 1, dia);
+    if (isNaN(data.getTime())) {
+      return false;//Data inválida
+    }
+    return true;//Data válida
+  }
+  function toggleScreen() {
+    setIsBlueScreen(!isBlueScreen);
+  }
+
+  function toggleGPSPage() {
+    setShowGPSPage(!showGPSPage);
+  }
+
+  function toggleRankingPage() {
+    setShowRankingPage(!showRankingPage);
+  }
+
+  return (
+    <View style={styles.container}>
+      {/* ...outros elementos e páginas... */}
+      {showGPSPage && <GPSPage />} {/* Renderize a página com GPS */}
+      {showRankingPage && <RankingPage />} {/* Renderize a página de ranking */}
+    </View>
+  );
+}
+
+  return (
+    <View style={[styles.container, { backgroundColor: '#87CCF6'}]}>
+      {isBlueScreen ? ( 
+        <>
+          <Text style={styles.appTitle}>MOVE AND EARN</Text>
+    <TouchableOpacity style={styles.button} onPress={toggleScreen}>
+      <Text style={styles.buttonText}>Não tem conta? Cadastrar.</Text>
+    </TouchableOpacity>
+    <View style={styles.rectangle}>
+      <Image source={require('./assets/Imagemlogo.png')} style={styles.Imagemlogo} />
+    </View>
+    <View style={styles.form}>
+      
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Senha"
+        value={senha}
+        onChangeText={setSenha}
+        secureTextEntry
+      />
+      <TouchableOpacity style={styles.submitButton}> 
+        <Text style={styles.submitButtonText}>Entrar</Text>
+      </TouchableOpacity>
+    </View>   
+  </>
+) : (
+  <>
+    <TouchableOpacity style={styles.backButton} onPress={goBack}>
+      <Text style={styles.backButtonText}>{'<'} Voltar</Text>
+    </TouchableOpacity>
+     <View style={[styles.form,{ backgroundColor: '#87CCF6', flex: 1,}]}>
+<TextInput
+  style={styles.input}
+  placeholder="Estado"
+  value={estado}
+  onChangeText={setEstado}
+/>
+
+<TextInput
+  style={styles.input}
+  placeholder="Cidade"
+  value={cidade}
+  onChangeText={setCidade}
+/>
+<TextInput
+  style={styles.input}
+  placeholder="CPF (000.000.000-00)"
+  value={cpf}
+  onChangeText={(text) => {
+    setCpf(formatarCPF(text));
+  }}
+/>
+<TextInput
+  style={styles.input}
+  placeholder="Data de Nascimento (dd/mm/aaaa)"
+  value={dataNascimento}
+  onChangeText={(text) => {
+    setDataNascimento(text);
+  }}
+  />
+      <TouchableOpacity style={styles.submitButton}>
+        <Text style={styles.submitButtonText}>Criar Conta</Text>
+      </TouchableOpacity>
+    </View>
+  </>
+)}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  appTitle: {
+    color: '#133E6A',
+    fontSize:40,
+    fontWeight: 'bold',
+    marginBottom: 60,
+    marginTop:100,
+  },
+  button: {
+    backgroundColor: 'transparent',
+    padding: 10,
+    borderRadius: 10,
+    margin: 10,
+    position: 'absolute',
+    alignSelf:'center',
+    bottom:90,
+    zIndex:3,
+  },
+  buttonText: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  rectangle: {
+  width: '85%',
+  height: 550,
+  backgroundColor: 'white',
+  borderRadius: 50,
+  marginTop: 30,
+  borderWidth: 3,
+  borderColor: '#87CCF6',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: 20,
+  position:'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    top:50,
+    left:20,
+  },
+  backButtonText: {
+    marginTop:60,
+    color: '#133E6A',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  secondPageText: {
+    color: '#133E6A',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  Imagemlogo: {
+    marginTop:-350,
+    width: 200,
+    height: 200,
+    alignSelf: 'center',
+    position: 'absolute',
+    top: '50%',
+  },
+  form: {
+    width: '100%',
+    alignItems: 'center',
+    position:"absolute",
+    marginTop:250,
+  },
+  input: {
+    width: '80%',
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    marginVertical: 10,
+    backgroundColor: 'white',
+  },
+  submitButton: {
+    backgroundColor: '#133E6A',
+    padding: 10,
+    borderRadius: 10,
+    marginVertical: 10,
+  },
+  submitButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+});    
