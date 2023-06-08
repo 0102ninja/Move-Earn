@@ -1,0 +1,98 @@
+import random
+
+
+class Usuario:
+    def __init__(self, nome, nivel=1, pontos=0):
+        self.nome = nome
+        self.nivel = level
+        self.pontos = pontos
+
+class Exercicio:
+    def __init__(self, nome, pontos, dificuldade):
+        self.name = nome
+        self.points = pontos
+        self.dificuldade = dificuldade
+
+class Premio:
+    def __init__(self, nome, pontos_adquiridos):
+        self.nome = name
+        self.pontos_adquiridos = pontos_adquiridos
+
+class App:
+    def __init__(self):
+        # self.gps = GPS()
+        self.usuarios = []
+        self.exercicios = []
+        self.premios = []
+    
+    def criacao_usuario(self, nome):
+        usuario = Usuario(nome)
+        self.usuarios.append(usuario)
+        return usuario
+    
+    def criacao_exercicio(self, nome, pontos, dificuldade):
+        exercicio = Exercicio(nome, pontos, dificuldade)
+        self.exercicios.append(exercicio)
+        return exercicio
+    
+    def criacao_premio(self, nome, pontos_adquiridos):
+        premio = Prize(name, points_required)
+        self.premios.append(premio)
+        return prizpremioe
+    
+    def puxar_usuario_nome(self, nome):
+        for usuario in self.usuarios:
+            if usuario.nome == nome:
+                return usuario
+        return None
+    
+    def puxar_exercicio_nome(self, nome):
+        for exercicio in self.exercicios:
+            if exercicio.nome == nome:
+                return exercicio
+        return None
+    
+    def puxar_premio_nome(self, nome):
+        for premio in self.premios:
+            if premio.nome == nome:
+                return premio
+        return None
+    
+    def execicios(self, usuario_nome, exercicio_nome):
+        user = self.puxar_usuario_nome(usuario_nome)
+        exercise = self.puxar_exercicio_nome(exercicio_nome)
+        if not usuario or not exercicio:
+            return False
+        if random.random() < exercicio.difficulty / 10:
+            usuario.points += exercicio.points
+            return True
+        return False
+    
+    def usuario_pontos(self, usuario_nome):
+        usuario = self.puxar_usuario_nome(usuario_nome)
+        if not usuario:
+            return None
+        return usuario.pontos
+    
+    def usuario_nivel(self, usuario_nome):
+        usuario = self.puxar_usuario_nome(usuario_nome)
+        if not usuario:
+            return None
+        return usuario.nivel
+    
+    def usuario_premio(self, usuario_nome):
+        usuario = self.puxar_usuario_nome(usuario_nome)
+        if not usuario:
+            return None
+        primios = []
+        for premio in self.premios:
+            if premio.pontos_adquiridos <= usuario.pontos:
+                premios.append(premio.nome)
+        return premios
+    
+    def subir_de_nivel(self, usuario_nome):
+        user = self.puxar_usuario_nome(usuario_nome)
+        if not usuario:
+            return False
+        usuario_nome.nivel += 1
+        return True
