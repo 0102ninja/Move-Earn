@@ -1,0 +1,13 @@
+import React from 'react';
+import { View, Text } from 'react-native';
+
+const RankingPage = () => {
+  return (
+    <View>
+      <Text>Ranking:</Text>
+      {/* Adicione o código para exibir o ranking */}
+    </View>
+  );
+};
+
+export default RankingPage;
